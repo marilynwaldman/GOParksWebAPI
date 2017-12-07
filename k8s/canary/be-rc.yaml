@@ -1,0 +1,26 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: dogpark-backend-canary
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: backend
+      labels:
+        app: dogpark
+        role: backend
+        env: canary
+    spec:
+      containers:
+      - name: backend
+        image: gcr.io/jenkins-187820/backend
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        readinessProbe:
+        ports:
+        - name: backend
+          containerPort: 3000
